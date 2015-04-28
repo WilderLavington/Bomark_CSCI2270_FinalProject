@@ -12,7 +12,12 @@ using namespace std;
 
 bool goodbuilt = false;
 bool badbuilt = false;
-
+struct InfoStorage{
+    int rating;
+    string album;
+    string artist;
+    string genre;
+};
 /* this is a constructor for the Genre class. The Genre class is what contains the vector to store the pointers to each
 linked list. The pre-conditions are none, but it creates a nil pointer to a new Album make sure no pointers overlap.
 there are no returning conditions. */
@@ -153,10 +158,56 @@ int Genre::getRoot(std::string genre){
 each album that it contains. its precondition is the node in the linked list and its return is none, but is does
 cout the information of the album*/
 void Genre::printLibrary(Album *node){
+    Album * head = node;
+    int counter = 0;
     while(node!=nil){
-        cout<<node->genre<<": "<<node->album<<" by "<<node->band<<" rated "<<node->rating<<endl;
+        //cout<<node->genre<<": "<<node->album<<" by "<<node->band<<" rated "<<node->rating<<endl;
         node=node->next;
+        counter++;
     }
+    node = head;
+    InfoStorage Order[counter];
+    counter = 0;
+    while(node!=nil){
+        Order[counter].album = node->album;
+        Order[counter].artist = node->band;
+        Order[counter].rating = node->rating;
+        Order[counter].genre = node->genre;
+        node=node->next;
+        counter++;
+    }
+    //print in order
+    //bubble sort
+    int array[counter+1];
+    for(int i = 0;i<counter;i++)
+    {
+        array[i] = Order[i].rating;
+    }
+    int temp;
+    for(int i2=0; i2<=counter; i2++)
+   {
+     for(int j=0; j<counter; j++)
+     {
+        //Swapping element in if statement
+           if(array[j]<array[j+1])
+       {
+        temp=array[j];
+        array[j]=array[j+1];
+        array[j+1]=temp;
+       }
+     }
+   }
+   for(int i = 0;i<counter;i++)
+   {
+       for(int j = 0;j<counter;j++)
+       {
+           if(array[i]==Order[j].rating)
+           {
+            cout<<Order[j].genre<<": "<<Order[j].artist<<" : "<<Order[j].album<<" : "<<Order[j].rating<<endl;
+           }
+       }
+   }
+
 }
 
 /* This is the caller to print the library. no preconditions and no post conditions, but what is does is go throguh the vector
